@@ -65,7 +65,7 @@ npm run android:build    # 构建 + cap sync android，再用 Android Studio 打
 3. `VITE_NATIVE_API_ORIGIN` / `VITE_API_ORIGIN`
 4. 代码内默认值
 
-> ⚠️ **注意**：`runtime.ts` 里的默认值目前写死为 `http://60.205.242.113:8080`，那是早期的旧服务器地址，现已不可达。当前生产环境是 `hebut-ip.com`（`42.193.99.126`）。打 Android 包前需要改这一处，并同步 `android/app/src/main/res/xml/network_security_config.xml` 里的明文域名白名单。
+> **注意**：`runtime.ts` 里的默认值已指向当前生产环境 `https://hebut-ip.com`。注意不要改回带端口的形式——服务器只对外放行了 80/443/8888/22，后端 8080 并未暴露，App 必须经域名走 443。如需换服务器，同时更新 `runtime.ts` 与 `android/app/src/main/res/xml/network_security_config.xml`。
 
 ## E2E 测试
 

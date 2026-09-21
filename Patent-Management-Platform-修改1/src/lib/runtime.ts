@@ -6,7 +6,7 @@ type RuntimeWindow = Window & {
   __APP_WS_BASE_URL__?: string
 }
 
-const DEFAULT_NATIVE_API_ORIGIN = 'http://60.205.242.113:8080'
+const DEFAULT_NATIVE_API_ORIGIN = 'https://hebut-ip.com'
 const API_ORIGIN_STORAGE_KEY = 'runtime.apiOrigin'
 
 const trimValue = (value: unknown) => String(value || '').replace(/['"]/g, '').trim()
