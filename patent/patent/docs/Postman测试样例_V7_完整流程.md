@@ -6,11 +6,11 @@
 
 ### 1.1 Postman 集合（中文命名）
 
-- 文件：[高校知识产权运营服务平台_API_V7_测试样例.postman_collection.json](file:///d:/patent/patent/postman/%E9%AB%98%E6%A0%A1%E7%9F%A5%E8%AF%86%E4%BA%A7%E6%9D%83%E8%BF%90%E8%90%A5%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0_API_V7_%E6%B5%8B%E8%AF%95%E6%A0%B7%E4%BE%8B.postman_collection.json)
+- 文件：[高校知识产权运营服务平台_API_V7_测试样例.postman_collection.json](../postman/高校知识产权运营服务平台_API_V7_测试样例.postman_collection.json)
 
 ### 1.2 Postman 环境（中文变量）
 
-- 文件：[高校知识产权运营服务平台_API_V7_本地环境.postman_environment.json](file:///d:/patent/patent/postman/%E9%AB%98%E6%A0%A1%E7%9F%A5%E8%AF%86%E4%BA%A7%E6%9D%83%E8%BF%90%E8%90%A5%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0_API_V7_%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83.postman_environment.json)
+- 文件：[高校知识产权运营服务平台_API_V7_本地环境.postman_environment.json](../postman/高校知识产权运营服务平台_API_V7_本地环境.postman_environment.json)
 
 环境变量说明：
 
@@ -179,7 +179,7 @@
 - 确认请求 Header 是否带了 `Authorization: Bearer {{token}}`。
 
 ### 4.2 400 参数错误
-- 对照接口文档检查必填参数是否齐全：[api_v7_项目书全量接口文档.md](file:///d:/patent/patent/docs/api_v7_%E9%A1%B9%E7%9B%AE%E4%B9%A6%E5%85%A8%E9%87%8F%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3.md)
+- 对照接口文档检查必填参数是否齐全：[api_v7_项目书全量接口文档.md](api_v7_项目书全量接口文档.md)
 
 ### 4.3 403 无权限
 - 个人专利被改为 PRIVATE 后，只有本人可访问。
