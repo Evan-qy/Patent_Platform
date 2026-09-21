@@ -1,0 +1,36 @@
+# Copy this file to one of the following non-committed locations and fill in
+# the actual local values before starting the backend:
+# 1. patent/patent/application-local.properties
+# 2. patent/patent/config/application-local.properties
+# 3. patent/patent/src/main/resources/application-secrets.properties
+#
+# 注意：application.properties 中的密钥类配置均无可用默认值。
+# 缺失时 JWT 会退化为每次启动随机生成（旧 Token 失效），
+# 未配置 ADMIN_AUTH_PASSWORD 时后台登录会被直接拒绝。
+
+DB_URL=jdbc:mysql://localhost:3306/patent?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=utf8
+DB_USERNAME=root
+DB_PASSWORD=replace-with-your-local-password
+DB_DRIVER=com.mysql.cj.jdbc.Driver
+
+ES_ENABLED=true
+ES_URIS=http://localhost:9200
+ES_USERNAME=
+ES_PASSWORD=
+
+# 生成方式（64 位十六进制）：openssl rand -hex 32
+# 生产环境务必使用独立随机值，且不得与开发环境复用
+JWT_SECRET=replace-with-a-random-64-hex-secret
+JWT_EXP_MS=86400000
+
+ADMIN_AUTH_USERNAME=admin
+ADMIN_AUTH_PASSWORD=replace-with-a-strong-admin-password
+ADMIN_JWT_SECRET=replace-with-a-random-64-hex-secret
+ADMIN_JWT_EXP_MS=86400000
+
+DASHSCOPE_API_KEY=replace-with-your-dashscope-key
+DASHSCOPE_APP_ID=
+DASHSCOPE_APP_ID_PATENT=
+DASHSCOPE_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions
+DASHSCOPE_MODEL=deepseek-v3.2
+DASHSCOPE_TIMEOUT_MS=60000

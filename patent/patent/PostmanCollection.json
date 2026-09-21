@@ -1,0 +1,673 @@
+{
+	"info": {
+		"_postman_id": "patent-platform-api",
+		"name": "Patent Platform API",
+		"description": "Comprehensive test suite for the Patent Platform API.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is success\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.eql(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser_{{$randomInt}}\",\n    \"password\": \"123456\",\n    \"fullName\": \"Test User\",\n    \"email\": \"test{{$randomInt}}@example.com\",\n    \"phone\": \"138{{$randomInt}}0000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					}
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has token\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.code).to.eql(0);",
+									"    pm.expect(jsonData.data).to.not.be.null;",
+									"    ",
+									"    // Set environment variable",
+									"    pm.environment.set(\"token\", jsonData.data);",
+									"    console.log(\"Token set: \" + jsonData.data);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get Current User Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update User Profile",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"location\": \"Shanghai\",\n    \"bio\": \"Software Engineer\",\n    \"skills\": \"Java, Spring Boot\",\n    \"website\": \"https://github.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/me/profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me",
+								"profile"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Expert",
+			"item": [
+				{
+					"name": "Update Expert Profile (Apply)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"field\": \"AI\",\n    \"expertise\": \"Deep Learning\",\n    \"achievements\": \"Published 10 papers\",\n    \"contactInfo\": \"expert@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/experts/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"experts",
+								"me"
+							]
+						}
+					}
+				},
+				{
+					"name": "Audit Expert (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"certStatus\": \"APPROVED\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/experts/1/audit",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"experts",
+								"1",
+								"audit"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Patents (External)",
+			"item": [
+				{
+					"name": "Search Patents (Wind)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/patents?category=wind&query=turbine&page=0&size=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"patents"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "wind"
+								},
+								{
+									"key": "query",
+									"value": "turbine"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Patent",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"publicNum\": \"CN100001\",\n    \"title\": \"New Wind Turbine\",\n    \"abstractText\": \"A very efficient wind turbine.\",\n    \"applicant\": \"Green Energy Corp\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/patents?category=wind",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"patents"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "wind"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Patent Detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/patents/wind/CN100001",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"patents",
+								"wind",
+								"CN100001"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "User Patents",
+			"item": [
+				{
+					"name": "List User Patents (Mine)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/user-patents?owner=me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"user-patents"
+							],
+							"query": [
+								{
+									"key": "owner",
+									"value": "me"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create User Patent",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.code === 0) {",
+									"    pm.environment.set(\"userPatentId\", jsonData.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"category\": \"wind\",\n    \"title\": \"My Personal Invention\",\n    \"abstractText\": \"This is a patent I uploaded.\",\n    \"visibility\": \"PUBLIC\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/user-patents",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"user-patents"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update User Patent",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"My Personal Invention (Updated)\",\n    \"visibility\": \"PRIVATE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/user-patents/{{userPatentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"user-patents",
+								"{{userPatentId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete User Patent",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/user-patents/{{userPatentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"user-patents",
+								"{{userPatentId}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Requirements",
+			"item": [
+				{
+					"name": "List Requirements",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/requirements",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"requirements"
+							]
+						}
+					}
+				},
+				{
+					"name": "Publish Requirement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.code === 0) {",
+									"    pm.environment.set(\"reqId\", jsonData.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Need Wind Turbine Technology\",\n    \"keywords\": \"wind turbine, generator\",\n    \"description\": \"Looking for partners.\",\n    \"budget\": 100000,\n    \"contactInfo\": \"req@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/requirements",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"requirements"
+							]
+						}
+					}
+				},
+				{
+					"name": "Match Patents for Requirement",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/requirements/{{reqId}}/match-patents",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"requirements",
+								"{{reqId}}",
+								"match-patents"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Transformations",
+			"item": [
+				{
+					"name": "List Transformations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/transformations",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"transformations"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Transformation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"patentPublicNum\": \"CN100001\",\n    \"category\": \"wind\",\n    \"title\": \"Wind Turbine Success\",\n    \"transType\": \"LICENSING\",\n    \"amount\": 50000,\n    \"transDate\": \"2024-01-01\",\n    \"buyer\": \"Big Corp\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/transformations",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"transformations"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Organizations",
+			"item": [
+				{
+					"name": "Search Organizations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/organizations?query=Tech",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"organizations"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "Tech"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Valuations",
+			"item": [
+				{
+					"name": "Create Valuation Report",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"patentPublicNum\": \"CN100001\",\n    \"category\": \"wind\",\n    \"patentTitle\": \"Test Patent\",\n    \"reportTitle\": \"Valuation Report 2024\",\n    \"valuationAmount\": 1000000,\n    \"evaluationMethod\": \"COST\",\n    \"evaluator\": \"Expert A\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/valuations",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"valuations"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "List Notifications",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/notifications",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"notifications"
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}

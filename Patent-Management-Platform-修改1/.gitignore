@@ -1,0 +1,19 @@
+# 核心：忽略所有.env环境文件（含ai目录下的，避免密钥泄露）
+.env
+.env.*
+ai/.env
+ai/.env.*
+
+# 例外：模板文件需要入库，供他人复制后填写真实凭据
+!.env.example
+!**/.env.example
+
+# 前端通用忽略规则（不用改，直接粘）
+node_modules/
+dist/
+build/
+*.log
+.vscode/
+.idea/
+tmp/
+temp/

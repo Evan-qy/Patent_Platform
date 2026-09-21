@@ -1,0 +1,107 @@
+用户行为日志功能说明
+
+一、目标
+为系统提供统一的用户行为审计能力，记录谁在什么时间、从什么地点、使用什么设备、对什么数据做了什么操作，并支持后台按条件查询、筛选、导出和追踪。
+
+二、日志用途
+1. 审计用户增删改查行为
+2. 回溯异常操作和误操作
+3. 分析用户活跃度和访问来源
+4. 支持后台管理员查看用户行为轨迹
+
+三、建议记录字段
+1. eventTime：事件时间，格式 2026-04-20 10:30:15
+2. eventType：事件类型，如 LOGIN、LOGOUT、CREATE、READ、UPDATE、DELETE、EXPORT、UPLOAD
+3. actionName：动作名称，如 新增专利、查看需求详情、修改个人资料
+4. username：登录用户名
+5. displayName：人员姓名或显示名
+6. userId：用户 ID
+7. roleName：角色名称，如 ADMIN、TEACHER、PERSONAL、ENTERPRISE
+8. ipAddress：客户端 IP
+9. macAddress：客户端 MAC
+10. hostName：主机名
+11. location：访问地点，可由 IP 解析得到，如 湖北武汉、广东深圳
+12. requestMethod：请求方法，如 GET、POST、PUT、DELETE
+13. requestPath：请求路径，如 /api/requirements
+14. resourceType：资源类型，如 requirement、patent、user、valuation
+15. resourceId：资源 ID
+16. operationResult：操作结果，如 SUCCESS、FAIL
+17. detail：详细说明，如 修改需求标题、删除专利编号 CN123456
+18. userAgent：浏览器或客户端标识
+19. platformType：平台类型，如 WEB、ANDROID、IOS、MINIAPP
+20. deviceInfo：设备描述，如 Chrome/Windows、WebView/Android
+
+四、后台必须支持的查询功能
+1. 按用户名查询
+2. 按人员姓名查询
+3. 按 IP 查询
+4. 按主机名查询
+5. 按事件类型查询
+6. 按资源类型查询
+7. 按时间范围查询
+8. 按操作结果查询
+9. 按增删改查分类查询
+10. 查看单个用户的完整行为轨迹
+
+五、增删改查分类建议
+1. CREATE：新增
+2. READ：查看
+3. UPDATE：修改
+4. DELETE：删除
+5. QUERY：条件检索
+6. EXPORT：导出
+7. IMPORT：导入
+
+六、推荐数据库表结构
+表名：audit_log
+
+字段建议：
+1. id bigint 主键
+2. user_id bigint
+3. username varchar(64)
+4. display_name varchar(128)
+5. role_name varchar(64)
+6. event_type varchar(32)
+7. action varchar(128)
+8. resource_type varchar(64)
+9. resource_id varchar(128)
+10. request_method varchar(16)
+11. request_path varchar(255)
+12. ip_address varchar(64)
+13. mac_address varchar(64)
+14. host_name varchar(128)
+15. location varchar(128)
+16. user_agent varchar(512)
+17. platform_type varchar(32)
+18. operation_result varchar(16)
+19. detail text
+20. created_at datetime
+
+七、推荐 txt 日志格式
+2026-04-20 10:30:15 | SUCCESS | CREATE | username=zhangsan | displayName=张三 | ip=192.168.1.10 | mac=AA-BB-CC-DD-EE-FF | host=DESKTOP-001 | location=湖北武汉 | resource=requirement | resourceId=1024 | action=新增技术需求
+
+八、推荐 log 行格式
+[2026-04-20 10:30:15] [SUCCESS] [UPDATE] [user=zhangsan] [name=张三] [ip=192.168.1.10] [mac=AA-BB-CC-DD-EE-FF] [host=DESKTOP-001] [location=湖北武汉] [resource=user] [id=18] [action=修改个人资料]
+
+九、后台展示建议
+1. 列表字段：时间、用户名、姓名、事件类型、动作、IP、地点、资源、结果
+2. 详情抽屉：展示主机名、MAC、UserAgent、请求路径、详细说明
+3. 过滤器：时间范围、用户名、IP、事件类型、资源类型、结果
+4. 支持导出 Excel 或 txt
+
+十、当前项目的落地建议
+1. 现有项目已经有 audit_log 实体、Mapper 和 /api/audit-logs 查询接口
+2. 当前字段仍然偏少，只记录了 userId、action、resourceType、resourceId、detail、createdAt
+3. 下一步应扩展实体和数据库字段，补齐 username、ipAddress、macAddress、hostName、location、requestPath、requestMethod、operationResult、userAgent
+4. 在登录、注册、需求发布、专利检索、评估、后台管理等关键接口统一写入日志
+5. 在后台新增 审计日志 页面，用于查看用户行为
+
+十一、关于 MAC 地址说明
+1. Web 端浏览器通常无法直接可靠获取客户端真实 MAC 地址
+2. 如果是局域网内桌面客户端或 App，可通过原生层采集后上报
+3. 如果只是浏览器访问，建议记录 deviceId、hostName、userAgent 作为替代标识
+
+十二、关于地点说明
+1. 地点通常由 IP 归属地服务解析得到
+2. 若部署在内网，可记录网段或单位名称
+3. 地点信息建议异步补全，避免拖慢主请求

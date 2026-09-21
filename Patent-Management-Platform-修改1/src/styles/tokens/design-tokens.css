@@ -1,0 +1,55 @@
+:root {
+  --token-color-primary-500: #2f6bff;
+  --token-color-primary-600: #2458d8;
+  --token-color-secondary-500: #22c7de;
+  --token-color-accent-500: #f6b73c;
+  --token-color-success-500: #22b07d;
+  --token-color-danger-500: #ef5350;
+  --token-gray-0: #ffffff;
+  --token-gray-100: #f5f7fb;
+  --token-gray-200: #e6ecf5;
+  --token-gray-300: #ced8e6;
+  --token-gray-500: #7e8ea8;
+  --token-gray-700: #415675;
+  --token-gray-900: #1b2a44;
+  --token-font-family-brand: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --token-font-weight-regular: 400;
+  --token-font-weight-medium: 500;
+  --token-font-weight-semibold: 600;
+  --token-font-weight-bold: 700;
+  --token-line-height-tight: 1.2;
+  --token-line-height-normal: 1.5;
+  --token-line-height-relaxed: 1.75;
+  --token-icon-size: 24px;
+  --token-icon-stroke-width: 2px;
+  --token-shadow-level-1: 0 2px 4px rgba(27, 42, 68, 0.08);
+  --token-shadow-level-2: 0 4px 8px rgba(27, 42, 68, 0.1);
+  --token-shadow-level-3: 0 6px 12px rgba(27, 42, 68, 0.12);
+  --token-shadow-level-4: 0 8px 16px rgba(27, 42, 68, 0.14);
+  --token-radius-sm: 4px;
+  --token-radius-md: 8px;
+  --token-radius-lg: 12px;
+  --token-motion-duration-fast: 200ms;
+  --token-motion-duration-delay: 300ms;
+  --token-motion-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+  --token-color-primary-500: #6f93ff;
+  --token-color-primary-600: #88a7ff;
+  --token-color-secondary-500: #4ce0ef;
+  --token-color-accent-500: #ffd06b;
+  --token-color-success-500: #45d59d;
+  --token-color-danger-500: #ff7c79;
+  --token-gray-0: #0d1628;
+  --token-gray-100: #14213a;
+  --token-gray-200: #1d2d4a;
+  --token-gray-300: #304262;
+  --token-gray-500: #9caaca;
+  --token-gray-700: #c3d0ea;
+  --token-gray-900: #eff4ff;
+  --token-shadow-level-1: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --token-shadow-level-2: 0 4px 8px rgba(0, 0, 0, 0.35);
+  --token-shadow-level-3: 0 6px 12px rgba(0, 0, 0, 0.4);
+  --token-shadow-level-4: 0 8px 16px rgba(0, 0, 0, 0.45);
+}

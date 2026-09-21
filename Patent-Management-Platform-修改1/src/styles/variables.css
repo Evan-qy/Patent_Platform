@@ -1,0 +1,186 @@
+:root {
+  --brand-deep-blue: #eaf2ff;
+  --brand-dark-blue: #f6f9ff;
+  --brand-teal-blue: #d7e7ff;
+  --brand-ocean-blue: #c6dcff;
+
+  --brand-bright-blue: var(--token-color-primary-500);
+  --brand-cyan: var(--token-color-secondary-500);
+  --brand-yellow: var(--token-color-accent-500);
+  --brand-red: var(--token-color-danger-500);
+  --brand-white: #ffffff;
+
+  --bg-app: #f4f8ff;
+  --bg-surface: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.72);
+  --bg-card-header: rgba(232, 241, 255, 0.92);
+  --bg-overlay: rgba(244, 248, 255, 0.78);
+
+  --color-primary: var(--token-color-primary-500);
+  --color-secondary: var(--token-color-secondary-500);
+  --color-accent: var(--token-color-accent-500);
+  --color-danger: var(--token-color-danger-500);
+  --color-success: var(--token-color-success-500);
+  --color-info: var(--token-color-primary-500);
+  --color-warning: var(--token-color-accent-500);
+  --primary-color: var(--token-color-primary-500);
+
+  --text-primary: var(--token-gray-900);
+  --text-secondary: #5a6e8f;
+  --text-muted: var(--token-gray-500);
+  --text-inverse: #ffffff;
+
+  --border-color: #d7e3f5;
+  --border-light: rgba(61, 125, 255, 0.14);
+  --border-focus: var(--token-color-primary-500);
+
+  --shadow-glow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  --shadow-sm: var(--token-shadow-level-1);
+  --shadow-md: var(--token-shadow-level-2);
+  --shadow-lg: var(--token-shadow-level-4);
+  --shadow-card: 0 10px 32px rgba(67, 94, 153, 0.12);
+
+  --glass-effect: rgba(255, 255, 255, 0.66);
+  --backdrop-blur: blur(14px);
+  --front-shell-bg:
+    radial-gradient(circle at top left, rgba(73, 132, 255, 0.18), transparent 30%),
+    radial-gradient(circle at top right, rgba(53, 196, 222, 0.14), transparent 26%),
+    linear-gradient(180deg, #f6fbff 0%, #eef4ff 52%, #e8f1fb 100%);
+  --front-shell-pattern:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.22) 12%, transparent 12.5%, transparent 52%, rgba(255, 255, 255, 0.14) 52.5%, transparent 53%),
+    radial-gradient(circle at center, rgba(61, 125, 255, 0.05), transparent 55%);
+  --front-shell-text: #10263f;
+  --front-shell-muted: #5b708c;
+  --front-shell-header-bg: rgba(255, 255, 255, 0.74);
+  --front-shell-header-border: rgba(61, 125, 255, 0.12);
+  --front-shell-card-bg: rgba(255, 255, 255, 0.84);
+  --front-shell-card-border: rgba(61, 125, 255, 0.14);
+  --front-shell-card-shadow: 0 22px 48px rgba(67, 94, 153, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  --front-shell-input-bg: rgba(255, 255, 255, 0.92);
+  --front-shell-input-border: rgba(61, 125, 255, 0.18);
+  --front-shell-table-head-bg: rgba(233, 242, 255, 0.82);
+  --front-shell-table-head-text: #2b528a;
+  --front-shell-button-secondary-bg: rgba(255, 255, 255, 0.7);
+  --front-shell-button-secondary-text: #16355b;
+  --auth-shell-bg:
+    radial-gradient(circle at top left, rgba(93, 151, 255, 0.16), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(102, 200, 255, 0.14), transparent 24%),
+    linear-gradient(160deg, #f5f9ff 0%, #eef5ff 52%, #f7fbff 100%);
+  --auth-card-bg: rgba(255, 255, 255, 0.78);
+  --auth-card-border: rgba(61, 125, 255, 0.16);
+  --auth-card-shadow: 0 20px 42px rgba(67, 94, 153, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+  /* ==========================================================================
+     Typography
+     ========================================================================== */
+  --font-family-base: var(--token-font-family-brand);
+  --font-family-mono: "Fira Code", monospace;
+
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px; /* Card Titles */
+  --font-size-xl: 24px;
+  --font-size-xxl: 28px; /* Big Numbers */
+  --font-size-display: 36px;
+
+  --line-height-tight: var(--token-line-height-tight);
+  --line-height-normal: var(--token-line-height-normal);
+  --line-height-relaxed: var(--token-line-height-relaxed);
+
+  /* ==========================================================================
+     Spacing & Layout
+     ========================================================================== */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+
+  --radius-sm: var(--token-radius-sm);
+  --radius-md: var(--token-radius-md);
+  --radius-lg: var(--token-radius-lg);
+  --radius-full: 9999px;
+
+  --container-max-width: 1440px;
+  --header-height: 80px;
+
+  /* ==========================================================================
+     Animations
+     ========================================================================== */
+  --transition-fast: var(--token-motion-duration-fast) var(--token-motion-ease-standard);
+  --transition-normal: 0.3s var(--token-motion-ease-standard);
+  --transition-slow: 0.5s var(--token-motion-ease-standard);
+}
+
+[data-theme="dark"] {
+  --brand-deep-blue: #030829;
+  --brand-dark-blue: #081832;
+  --brand-teal-blue: #034c6a;
+  --brand-ocean-blue: #04425f;
+
+  --brand-bright-blue: var(--token-color-primary-500);
+  --brand-cyan: var(--token-color-secondary-500);
+  --brand-yellow: var(--token-color-accent-500);
+  --brand-red: var(--token-color-danger-500);
+
+  --bg-app: #030829;
+  --bg-surface: #081832;
+  --bg-card: rgba(3, 76, 106, 0.34);
+  --bg-card-header: #04425f;
+  --bg-overlay: rgba(3, 8, 41, 0.8);
+
+  --color-primary: var(--token-color-primary-500);
+  --color-secondary: var(--token-color-secondary-500);
+  --color-accent: var(--token-color-accent-500);
+  --color-danger: var(--token-color-danger-500);
+  --color-success: var(--token-color-success-500);
+  --color-info: var(--token-color-primary-500);
+  --color-warning: var(--token-color-accent-500);
+  --primary-color: var(--token-color-primary-500);
+
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.45);
+  --text-inverse: #000000;
+
+  --border-color: #034c6a;
+  --border-light: rgba(255, 255, 255, 0.1);
+  --border-focus: #4b8df8;
+
+  --shadow-glow-inset: -10px 0px 15px #034c6a inset, 0px -10px 15px #034c6a inset, 10px 0px 15px #034c6a inset, 0px 10px 15px #034c6a inset;
+  --shadow-sm: var(--token-shadow-level-1);
+  --shadow-md: var(--token-shadow-level-2);
+  --shadow-lg: var(--token-shadow-level-4);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+  --glass-effect: rgba(3, 76, 106, 0.3);
+  --front-shell-bg:
+    radial-gradient(circle at top left, rgba(53, 114, 255, 0.28), transparent 28%),
+    radial-gradient(circle at top right, rgba(34, 199, 222, 0.22), transparent 24%),
+    linear-gradient(135deg, #08172d 0%, #10284c 42%, #0f5470 100%);
+  --front-shell-pattern:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.05) 12%, transparent 12.5%, transparent 52%, rgba(255, 255, 255, 0.04) 52.5%, transparent 53%),
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.03), transparent 55%);
+  --front-shell-text: #edf6ff;
+  --front-shell-muted: rgba(220, 238, 255, 0.72);
+  --front-shell-header-bg: rgba(10, 27, 52, 0.72);
+  --front-shell-header-border: rgba(180, 221, 255, 0.14);
+  --front-shell-card-bg: rgba(9, 26, 50, 0.72);
+  --front-shell-card-border: rgba(196, 225, 255, 0.12);
+  --front-shell-card-shadow: 0 22px 48px rgba(3, 11, 28, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --front-shell-input-bg: rgba(255, 255, 255, 0.08);
+  --front-shell-input-border: rgba(196, 225, 255, 0.12);
+  --front-shell-table-head-bg: rgba(255, 255, 255, 0.08);
+  --front-shell-table-head-text: #bfe8ff;
+  --front-shell-button-secondary-bg: rgba(255, 255, 255, 0.06);
+  --front-shell-button-secondary-text: #edf6ff;
+  --auth-shell-bg:
+    radial-gradient(circle at top left, rgba(53, 114, 255, 0.28), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(34, 199, 222, 0.24), transparent 20%),
+    linear-gradient(135deg, #08172d 0%, #10284c 42%, #0f5470 100%);
+  --auth-card-bg: rgba(9, 26, 50, 0.78);
+  --auth-card-border: rgba(196, 225, 255, 0.14);
+  --auth-card-shadow: 0 24px 48px rgba(3, 11, 28, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}

@@ -1,0 +1,109 @@
+# ============================================================
+# 高校知识产权运营服务平台 —— 仓库根目录忽略规则
+#
+# 注意：本文件只作用于「根仓库」。
+#   - 后端源码位于 patent/patent/（嵌套独立仓库，由它自己的 .gitignore 管辖）
+#   - 前端源码位于 Patent-Management-Platform-修改1/（由该目录下的 .gitignore 补充管辖）
+# ============================================================
+
+# ---------- 敏感配置：一律不入库 ----------
+# 任何层级的本地配置与 .env 都不允许提交，仅放行 *.example 模板
+.env
+.env.*
+!.env.example
+**/.env.example
+
+application-local.properties
+application-secrets.properties
+**/application-local.properties
+**/application-secrets.properties
+
+# ---------- IDE / 编辑器 ----------
+.idea/
+**/.idea/
+.vscode/
+**/.vscode/
+*.iml
+
+# ---------- 构建产物 ----------
+target/
+build/
+dist/
+output/
+**/target/
+**/build/
+**/dist/
+**/output/
+
+# ---------- 依赖目录 ----------
+node_modules/
+**/node_modules/
+.venv/
+**/.venv/
+venv/
+
+# ---------- 运行期与生成的临时文件 ----------
+dump.rdb
+*.log
+__pycache__/
+**/__pycache__/
+*.pyc
+
+# ---------- 文档提取中间产物 ----------
+_docx_extract/
+
+# ---------- AI 检索模块的本地缓存与索引 ----------
+# cache/ 存放从 OSS 拉取的原始文档（含内部资料），index/ 为生成的向量索引，
+# 两者均可由 `python -m oss_qa build-index` 重新生成，不入库。
+ai/cache/
+ai/index/
+**/ai/cache/
+**/ai/index/
+
+# ---------- 测试产物 ----------
+playwright-report/
+test-results/
+**/playwright-report/
+**/test-results/
+
+# ---------- 大体积打包文件 ----------
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# ---------- 本机遗留的临时/词表文件（原工作区未清理） ----------
+tmp_*.txt
+tmp_*.cjs
+flask_keys*.txt
+*.rdb
+
+# 后端原嵌套仓库的 .git 备份（不参与本项目版本管理）
+_backend_git_backup/
+
+# ---------- AI 工具配置目录 ----------
+# 原先 15 个目录里装的是同一套 skill 的重复副本，已去重归档到 _ai-toolkit/（本机私有，不入库）。
+# 只保留 .github/workflows 等真实工程配置的可能，故仅忽略 prompts/。
+.agent/
+.agents/
+.claude/
+.codebuddy/
+.codex/
+.continue/
+.cursor/
+.gemini/
+.github/prompts/
+.kiro/
+.opencode/
+.qoder/
+.roo/
+.trae/
+.windsurf/
+
+# ---------- AI 归档目录（私有，仅本机留存）----------
+_ai-toolkit/
+
+# ---------- 文档归档（私有，仅本机留存）----------
+# 同名系列 PPT 只保留内容最全的「知创未来移动应用开发-已完善.pptx」入库，
+# 其余版本（网页手机端版 / 早期草稿 / .bak）移入此处，不入库。
+_docs-archive/

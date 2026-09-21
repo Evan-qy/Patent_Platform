@@ -1,0 +1,1316 @@
+{
+	"info": {
+		"_postman_id": "d2ed95fa-3c64-4b0e-a3f0-2b20a9d8f3a1",
+		"name": "高校知识产权运营服务平台 API（V7）- 测试样例",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "主机",
+			"value": "localhost",
+			"type": "string"
+		},
+		{
+			"key": "端口",
+			"value": "8080",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "00 准备",
+			"item": [
+				{
+					"name": "00.01 生成随机账号（写入：用户名/密码）",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set('用户名', 'user_' + Date.now());",
+									"pm.environment.set('密码', '123456');"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/",
+							"host": [
+								"{{主机}}"
+							],
+							"port": "{{端口}}",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "01 认证与用户",
+			"item": [
+				{
+					"name": "01.01 注册（写入：用户ID）",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test('注册成功 code=0', function () { pm.expect(jsonData.code).to.eql(0); });",
+									"if (jsonData && jsonData.code === 0 && jsonData.data && jsonData.data.userId) {",
+									"  pm.environment.set('用户ID', String(jsonData.data.userId));",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"{{用户名}}\",\n  \"password\": \"{{密码}}\",\n  \"phone\": \"13800000000\",\n  \"email\": \"test@example.com\",\n  \"nickname\": \"测试用户\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/auth/register",
+							"host": [
+								"{{主机}}"
+							],
+							"port": "{{端口}}",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "01.02 登录（写入：token）",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test('登录成功 code=0', function () { pm.expect(jsonData.code).to.eql(0); });",
+									"if (jsonData && jsonData.code === 0 && jsonData.data) {",
+									"  pm.environment.set('token', String(jsonData.data));",
+									"}",
+									"pm.test('token已写入环境变量', function () { pm.expect(pm.environment.get('token')).to.not.eql(''); });"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"{{用户名}}\",\n  \"password\": \"{{密码}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/auth/login",
+							"host": [
+								"{{主机}}"
+							],
+							"port": "{{端口}}",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "01.03 获取当前用户信息",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/users/me",
+							"host": [
+								"{{主机}}"
+							],
+							"port": "{{端口}}",
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "01.04 更新用户资料",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nickname\": \"测试昵称\",\n  \"avatarUrl\": \"https://example.com/avatar.png\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/users/me/profile",
+							"host": [
+								"{{主机}}"
+							],
+							"port": "{{端口}}",
+							"path": [
+								"api",
+								"users",
+								"me",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "02 公共专利库",
+			"item": [
+				{
+					"name": "02.01 查询公共专利（wind）",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/patents?category=wind&query=人工智能&page=0&size=10",
+							"host": [
+								"{{主机}}"
+							],
+							"port": "{{端口}}",
+							"path": [
+								"api",
+								"patents"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "wind"
+								},
+								{
+									"key": "query",
+									"value": "人工智能"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02.02 写入/更新公共专利（wind，CN_TEST_001）",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"publicNum\": \"CN_TEST_001\",\n  \"title\": \"测试风电专利\",\n  \"abstractText\": \"用于接口联调的测试数据\",\n  \"applicant\": \"测试机构\",\n  \"inventor\": \"张三\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/patents?category=wind",
+							"host": [
+								"{{主机}}"
+							],
+							"port": "{{端口}}",
+							"path": [
+								"api",
+								"patents"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "wind"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02.03 获取公共专利详情（wind/CN_TEST_001）",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/patents/wind/CN_TEST_001",
+							"host": [
+								"{{主机}}"
+							],
+							"port": "{{端口}}",
+							"path": [
+								"api",
+								"patents",
+								"wind",
+								"CN_TEST_001"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "03 个人专利管理",
+			"item": [
+				{
+					"name": "03.01 上传个人专利（写入：个人专利ID）",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test('上传成功 code=0', function () { pm.expect(jsonData.code).to.eql(0); });",
+									"if (jsonData && jsonData.code === 0 && jsonData.data && jsonData.data.id) {",
+									"  pm.environment.set('个人专利ID', String(jsonData.data.id));",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"category\": \"solar\",\n  \"title\": \"我的太阳能专利\",\n  \"publicNum\": \"CN_USER_001\",\n  \"visibility\": \"PUBLIC\",\n  \"abstractText\": \"用户专利测试数据\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/user-patents",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "user-patents" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03.02 查看我的专利列表（owner=me）",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/user-patents?owner=me",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "user-patents" ],
+							"query": [ { "key": "owner", "value": "me" } ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03.03 查看个人专利详情（个人专利ID）",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/user-patents/{{个人专利ID}}",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "user-patents", "{{个人专利ID}}" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03.04 更新个人专利（PUT）",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"我的太阳能专利（已更新）\",\n  \"visibility\": \"PRIVATE\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/user-patents/{{个人专利ID}}",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "user-patents", "{{个人专利ID}}" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03.05 删除个人专利（DELETE）",
+					"request": {
+						"method": "DELETE",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/user-patents/{{个人专利ID}}",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "user-patents", "{{个人专利ID}}" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03.06 查看公开个人专利列表（不传owner）",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/user-patents",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "user-patents" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03.07 查询公开个人专利（query/category）",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/user-patents?query=新能源&category=solar",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "user-patents" ],
+							"query": [
+								{ "key": "query", "value": "新能源" },
+								{ "key": "category", "value": "solar" }
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "04 专家模块",
+			"item": [
+				{
+					"name": "04.01 查询专家（公开）",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/experts?query=人工智能",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "experts" ],
+							"query": [ { "key": "query", "value": "人工智能" } ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04.02 提交专家认证（当前用户）",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"field\": \"人工智能\",\n  \"expertise\": \"知识图谱\",\n  \"achievements\": \"论文/专利等\",\n  \"contactInfo\": \"13800000000\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/experts/me",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "experts", "me" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04.03 管理员录入专家（POST /api/experts）",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": {{用户ID}},\n  \"field\": \"人工智能\",\n  \"expertise\": \"机器学习\",\n  \"achievements\": \"项目经验\",\n  \"contactInfo\": \"13800000000\",\n  \"certStatus\": \"APPROVED\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/experts",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "experts" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04.04 管理员审核专家（POST /api/admin/experts/{userId}/audit）",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"certStatus\": \"APPROVED\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/admin/experts/{{用户ID}}/audit",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "admin", "experts", "{{用户ID}}", "audit" ]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "05 需求与匹配",
+			"item": [
+				{
+					"name": "05.01 创建需求（写入：需求ID）",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test('创建需求成功 code=0', function () { pm.expect(jsonData.code).to.eql(0); });",
+									"if (jsonData && jsonData.code === 0 && jsonData.data && jsonData.data.id) {",
+									"  pm.environment.set('需求ID', String(jsonData.data.id));",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"设备预测性维护\",\n  \"keywords\": \"预测性维护,异常检测\",\n  \"techDirection\": \"时序异常检测\",\n  \"cooperationMode\": \"技术转让\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/requirements",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "requirements" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05.02 需求匹配专利",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/requirements/{{需求ID}}/match-patents",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "requirements", "{{需求ID}}", "match-patents" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05.02a 查询需求列表（mine=true）",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/requirements?mine=true",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "requirements" ],
+							"query": [
+								{ "key": "mine", "value": "true" }
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05.02b 查询需求列表（category/query）",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/requirements?query=设备&category=时序异常检测",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "requirements" ],
+							"query": [
+								{ "key": "query", "value": "设备" },
+								{ "key": "category", "value": "时序异常检测" }
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05.03 需求匹配专家",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/requirements/{{需求ID}}/match-experts",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "requirements", "{{需求ID}}", "match-experts" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05.04 保存专利匹配结果（persist）",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"items\": [\n    {\n      \"patentCategory\": \"wind\",\n      \"patentPublicNum\": \"CN_TEST_001\",\n      \"matchScore\": 0.912,\n      \"matchReason\": \"关键词命中\"\n    }\n  ]\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/requirements/{{需求ID}}/match-patents/persist",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "requirements", "{{需求ID}}", "match-patents", "persist" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05.05 保存专家匹配结果（persist）",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"items\": [\n    {\n      \"expertId\": {{用户ID}},\n      \"matchScore\": 0.855,\n      \"matchReason\": \"expertise 匹配\"\n    }\n  ]\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/requirements/{{需求ID}}/match-experts/persist",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "requirements", "{{需求ID}}", "match-experts", "persist" ]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "06 转化成果",
+			"item": [
+				{
+					"name": "06.01 查询转化成果列表",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/transformations",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "transformations" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "06.02 创建转化成果",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"patentCategory\": \"wind\",\n  \"patentPublicNum\": \"CN_TEST_001\",\n  \"status\": \"Success\",\n  \"benefitAmount\": 1000000\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/transformations",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "transformations" ]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "07 价值评估",
+			"item": [
+				{
+					"name": "07.01 生成评估报告（EXTERNAL）",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"patentSource\": \"EXTERNAL\",\n  \"patentCategory\": \"wind\",\n  \"patentPublicNum\": \"CN_TEST_001\",\n  \"modelVersion\": \"v1\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/valuations",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "valuations" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "07.02 查询评估报告列表（EXTERNAL）",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/valuations?patentSource=EXTERNAL&patentCategory=wind&patentPublicNum=CN_TEST_001",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "valuations" ],
+							"query": [
+								{ "key": "patentSource", "value": "EXTERNAL" },
+								{ "key": "patentCategory", "value": "wind" },
+								{ "key": "patentPublicNum", "value": "CN_TEST_001" }
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "07.03 维护评估模型参数（PUT /api/valuation-params/{key}）",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"paramValue\": \"0.8\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/valuation-params/weight_tech",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "valuation-params", "weight_tech" ]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "08 机构",
+			"item": [
+				{
+					"name": "08.01 创建机构（写入：机构ID）",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test('创建机构成功 code=0', function () { pm.expect(jsonData.code).to.eql(0); });",
+									"if (jsonData && jsonData.code === 0 && jsonData.data && jsonData.data.id) {",
+									"  pm.environment.set('机构ID', String(jsonData.data.id));",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"测试机构\",\n  \"type\": \"UNIVERSITY\",\n  \"address\": \"测试地址\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/organizations",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "organizations" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "08.02 查询机构（query/type）",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/organizations?query=测试&type=UNIVERSITY",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "organizations" ],
+							"query": [
+								{ "key": "query", "value": "测试" },
+								{ "key": "type", "value": "UNIVERSITY" }
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "08.03 加入机构/设置主机构",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"relationType\": \"MEMBER\",\n  \"positionTitle\": \"工程师\",\n  \"isPrimary\": true\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/organizations/{{机构ID}}/members",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "organizations", "{{机构ID}}", "members" ]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "09 通知",
+			"item": [
+				{
+					"name": "09.01 查询通知列表",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/notifications",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "notifications" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "09.02 创建通知（写入：通知ID）",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test('创建通知成功 code=0', function () { pm.expect(jsonData.code).to.eql(0); });",
+									"if (jsonData && jsonData.code === 0 && jsonData.data && jsonData.data.id) {",
+									"  pm.environment.set('通知ID', String(jsonData.data.id));",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": {{用户ID}},\n  \"type\": \"SYSTEM\",\n  \"title\": \"测试通知\",\n  \"content\": \"这是一条测试通知\",\n  \"relatedRequirementId\": {{需求ID}}\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/notifications",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "notifications" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "09.03 标记通知已读",
+					"request": {
+						"method": "PUT",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/notifications/{{通知ID}}/read",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "notifications", "{{通知ID}}", "read" ]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "10 审计日志",
+			"item": [
+				{
+					"name": "10.01 查询审计日志（action=login）",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/audit-logs?action=login",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "audit-logs" ],
+							"query": [ { "key": "action", "value": "login" } ]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "11 同步任务",
+			"item": [
+				{
+					"name": "11.01 创建同步任务（写入：同步任务ID）",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test('创建任务成功 code=0', function () { pm.expect(jsonData.code).to.eql(0); });",
+									"if (jsonData && jsonData.code === 0 && jsonData.data && jsonData.data.id) {",
+									"  pm.environment.set('同步任务ID', String(jsonData.data.id));",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"jobType\": \"IMPORT\",\n  \"targetCategory\": \"wind\",\n  \"source\": \"manual\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/sync-jobs",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "sync-jobs" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "11.02 查询同步任务列表（mine=true）",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/sync-jobs?mine=true",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "sync-jobs" ],
+							"query": [ { "key": "mine", "value": "true" } ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "11.03 查询同步任务详情（同步任务ID）",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/sync-jobs/{{同步任务ID}}",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "sync-jobs", "{{同步任务ID}}" ]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "12 AI（通义千问中转）",
+			"item": [
+				{
+					"name": "12.01 AI问答（后端中转）",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"question\": \"帮我总结一下高校知识产权运营平台的核心功能\",\n  \"model\": \"qwen-plus\",\n  \"temperature\": 0.7\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/ai/chat",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "ai", "chat" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "12.02 AI专利检索（需求/场景驱动）",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"requirement\": \"我想找关于风力发电机叶片除冰的技术方案\",\n  \"sessionId\": \"session_123\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/ai/chat/patent",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "ai", "chat", "patent" ]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "13 聊天会话（持久化）",
+			"item": [
+				{
+					"name": "13.01 创建会话（写入：会话ID）",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test('创建会话成功 code=0', function () { pm.expect(jsonData.code).to.eql(0); });",
+									"if (jsonData && jsonData.code === 0 && jsonData.data && jsonData.data.id) {",
+									"  pm.environment.set('会话ID', String(jsonData.data.id));",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"我的聊天\"\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/chat/sessions",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "chat", "sessions" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "13.02 查询会话列表",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/chat/sessions",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "chat", "sessions" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "13.03 查询会话消息记录（会话ID）",
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" } ],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/chat/sessions/{{会话ID}}/messages",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "chat", "sessions", "{{会话ID}}", "messages" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "13.04 继续对话（带历史上下文）",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+							{ "key": "Content-Type", "value": "application/json", "type": "text" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sessionId\": {{会话ID}},\n  \"question\": \"根据我们之前的对话，继续补充细节\",\n  \"model\": \"qwen-plus\",\n  \"temperature\": 0.7,\n  \"historyLimit\": 20\n}",
+							"options": { "raw": { "language": "json" } }
+						},
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/chat/ask",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "chat", "ask" ]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "14 专利ES搜索（Elasticsearch）",
+			"item": [
+				{
+					"name": "14.01 重建ES索引（全部，需登录）",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+						],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/patents/es/reindex",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "patents", "es", "reindex" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "14.00 ES状态（索引/文档数）",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/patents/es/status",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "patents", "es", "status" ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "14.02 重建ES索引（单类 wind，需登录）",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+						],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/patents/es/reindex?category=wind",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "patents", "es", "reindex" ],
+							"query": [ { "key": "category", "value": "wind" } ]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "14.02b 索引单条专利（需登录）",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+						],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/patents/es/index-one?category=wind&publicNum=CN123456789A",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "patents", "es", "index-one" ],
+							"query": [
+								{ "key": "category", "value": "wind" },
+								{ "key": "publicNum", "value": "CN123456789A" }
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "14.03 ES检索（关键词，多字段）",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/patents/es/search?query=人工智能&category=wind&page=0&size=10",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "patents", "es", "search" ],
+							"query": [
+								{ "key": "query", "value": "人工智能" },
+								{ "key": "category", "value": "wind" },
+								{ "key": "page", "value": "0" },
+								{ "key": "size", "value": "10" }
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "14.04 ES检索（关键语句，phrase=true）",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{主机}}:{{端口}}/api/patents/es/search?query=一种用于专利匹配的方法&phrase=true&page=0&size=10",
+							"host": [ "{{主机}}" ],
+							"port": "{{端口}}",
+							"path": [ "api", "patents", "es", "search" ],
+							"query": [
+								{ "key": "query", "value": "一种用于专利匹配的方法" },
+								{ "key": "phrase", "value": "true" },
+								{ "key": "page", "value": "0" },
+								{ "key": "size", "value": "10" }
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
